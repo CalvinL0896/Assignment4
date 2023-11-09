@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rock Paper Scissors Game</title>
+    <style>
+        body {
+            font-family:'Courier New', Courier, monospace;
+            text-align: center;
+            background-color: aquamarine;
+        }
+
+        h1 {
+            margin-top: 50px;
+        }
+
+        button {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #1674c7;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            font-family:'Courier New', Courier, monospace;
+
+        }
+
+            button:hover {
+                background-color: #16c5f6;
+            }
+
+        #result {
+            margin-top: 50px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        img {
+            width: 150px;
+            height: 150px;
+            margin: 10px;
+        }
+
+        #score {
+            margin-top: 50px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Try to Beat Me in a Game of Rock-Paper-Scissors</h1>
+    <p>Pick your move:</p>
+    <button id="rock"><img src="rock.jpg" alt="rock"></button>
+    <button id="paper"><img src="paper.jpg" alt="paper"></button>
+    <button id="scissors"><img src="scissors.jpg" alt="scissors"></button>
+    <div id="result"></div>
+    <div id="score"></div>
+    <script>
+        var playerMoves = [];
+        var computerMoves = [];
+        var playerScore = 0;
+        var computerScore = 0;
+        var moves = ["rock", "paper", "scissors"];
+        var result = document.getElementById("result");
+        var score = document.getElementById("score");
+        var rock = document.getElementById("rock");
+        var paper = document.getElementById("paper");
+        var scissors = document.getElementById("scissors");
+        rock.addEventListener("click", function () {
+            play("rock");
+        });
+        paper.addEventListener("click", function () {
+            play("paper");
+        });
+        scissors.addEventListener("click", function () {
+            play("scissors");
+        });
+        function play(playerMove) {
+            playerMoves.push(playerMove);
+            var computerMove = getComputerMove();
+            computerMoves.push(computerMove);
+            var winner = getWinner(playerMove, computerMove);
+            result.innerHTML = "You played <img src='paper.jpg" + playerMove + ".jpg' alt='" + playerMove + "'>, and the computer played <img src='rock/" + computerMove + ".jpg' alt='" + computerMove + "'>. " + winner;
+            score.innerHTML = "Player: " + playerScore + " | Computer: " + computerScore;
+        }
+        function getComputerMove() {
+            var lastPlayerMove = playerMoves[playerMoves.length - 1];
+            var lastComputerMove = computerMoves[computerMoves.length - 1];
+            if (lastPlayerMove == lastComputerMove) {
+                return moves(Math.floor(Math.random() * moves.length));
+            } else {
+                var nextPlayerMove = playerMoves[playerMoves.length - 2];
+                var predictedMove = getPredictedMove(nextPlayerMove);
+                return getWinningMove(predictedMove);
+            }
+        }
+        function getPredictedMove(move) {
+            if (move === "rock") {
+                return "paper";
+            } else if (move === "paper") {
+                return "scissors";
+            } else {
+                return "rock";
+            }
+        }
+        function getWinningMove(move) {
+            if (move === "rock") {
+                return "paper";
+            } else if (move === "paper") {
+                return "scissors";
+            } else {
+                return "rock";
+            }
+        }
+        function getWinner(playerMove, computerMove) {
+            if (playerMove === computerMove) {
+                return "It's a tie!";
+            } else if (getWinningMove(playerMove) === computerMove) {
+                computerScore++;
+                return "The computer wins!";
+            } else {
+                playerScore++;
+                return "You win!";
+            }
+        }
+    </script>
+</body>
+</html>
